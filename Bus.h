@@ -1,18 +1,30 @@
 #pragma once
-#include <cstdint>
 #include <array>
+#include <cstdint>
 
 #include "6502.h"
+#include "Cartridge.h"
+#include "PPU.h"
 
 class Bus {
-    public:
+   public:
     Bus();
     ~Bus();
 
+    // Devices on main bus
     cpu6502 cpu;
+    PPU ppu;
+    std::shared_ptr<Cartridge> cart;
+    uint8_t cpuRam[2048];
 
-    std::array<uint8_t, 64 * 1024> ram;
+    void cpuWrite(uint16_t addr, uint8_t data);
+    uint8_t cpuRead(uint16_t addr, bool bReadOnly = false);
 
-    void write(uint16_t addr, uint8_t data);
-    uint8_t read(uint16_t addr, bool bReadOnly = false);
+    void insertCartridge(const std::shared_ptr<Cartridge>& cartridge);
+    void reset();
+    void clock();
+
+   private:
+    // Count of how many clocks have passed
+    uint32_t nSystemClockCounter = 0;
 };
