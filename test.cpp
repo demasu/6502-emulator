@@ -1,28 +1,28 @@
 #include <iostream>
 #include <sstream>
 
-#include "Bus.h"
 #include "6502.h"
+#include "Bus.h"
 
 #define OLC_PGE_APPLICATION
 #include "olcPixelGameEngine.h"
 
 class Demo_6502 : public olc::PixelGameEngine {
-    public:
+   public:
     Demo_6502() {
         sAppName = "6502 Demonstration";
     }
 
-    private:
+   private:
     Bus nes;
     std::shared_ptr<Cartridge> cart;
-    bool bEmulationRun = false;
+    bool bEmulationRun  = false;
     float fResidualTime = 0.0f;
     std::map<uint16_t, std::string> mapAsm;
 
     std::string hex(uint32_t n, uint8_t d) {
         std::string s(d, '0');
-        for ( int i = d - 1; i >= 0; i--, n >>= 4 ) {
+        for (int i = d - 1; i >= 0; i--, n >>= 4) {
             s[i] = "0123456789ABCDEF"[n & 0xF];
         }
 
@@ -31,9 +31,9 @@ class Demo_6502 : public olc::PixelGameEngine {
 
     void DrawRam(int x, int y, uint16_t nAddr, int nRows, int nColumns) {
         int nRamX = x, nRamY = y;
-        for ( int row = 0; row < nRows; row++ ) {
+        for (int row = 0; row < nRows; row++) {
             std::string sOffset = "$" + hex(nAddr, 4) + ":";
-            for ( int col = 0; col < nColumns; col++ ) {
+            for (int col = 0; col < nColumns; col++) {
                 sOffset += " " + hex(nes.cpuRead(nAddr, true), 2);
                 nAddr += 1;
             }
@@ -44,10 +44,10 @@ class Demo_6502 : public olc::PixelGameEngine {
 
     void DrawCpu(int x, int y) {
         std::string status = "STATUS: ";
-        DrawString(x,       y, status, olc::WHITE);
-        DrawString(x + 64,  y, "N", nes.cpu.status & cpu6502::N ? olc::GREEN : olc::RED);
-        DrawString(x + 80,  y, "V", nes.cpu.status & cpu6502::V ? olc::GREEN : olc::RED);
-        DrawString(x + 96,  y, "-", nes.cpu.status & cpu6502::U ? olc::GREEN : olc::RED);
+        DrawString(x, y, status, olc::WHITE);
+        DrawString(x + 64, y, "N", nes.cpu.status & cpu6502::N ? olc::GREEN : olc::RED);
+        DrawString(x + 80, y, "V", nes.cpu.status & cpu6502::V ? olc::GREEN : olc::RED);
+        DrawString(x + 96, y, "-", nes.cpu.status & cpu6502::U ? olc::GREEN : olc::RED);
         DrawString(x + 112, y, "B", nes.cpu.status & cpu6502::B ? olc::GREEN : olc::RED);
         DrawString(x + 128, y, "D", nes.cpu.status & cpu6502::D ? olc::GREEN : olc::RED);
         DrawString(x + 144, y, "I", nes.cpu.status & cpu6502::I ? olc::GREEN : olc::RED);
@@ -62,24 +62,24 @@ class Demo_6502 : public olc::PixelGameEngine {
     }
 
     void DrawCode(int x, int y, int nLines) {
-        auto it_a = mapAsm.find(nes.cpu.pc);
+        auto it_a  = mapAsm.find(nes.cpu.pc);
         int nLineY = (nLines >> 1) * 10 + y;
-        if ( it_a != mapAsm.end() ) {
+        if (it_a != mapAsm.end()) {
             DrawString(x, nLineY, (*it_a).second, olc::CYAN);
-            while ( nLineY < (nLines * 10) + y ) {
+            while (nLineY < (nLines * 10) + y) {
                 nLineY += 10;
-                if ( ++it_a != mapAsm.end() ) {
+                if (++it_a != mapAsm.end()) {
                     DrawString(x, nLineY, (*it_a).second);
                 }
             }
         }
 
-        it_a = mapAsm.find(nes.cpu.pc);
+        it_a   = mapAsm.find(nes.cpu.pc);
         nLineY = (nLines >> 1) * 10 + y;
-        if ( it_a != mapAsm.end() ) {
-            while ( nLineY > y ) {
+        if (it_a != mapAsm.end()) {
+            while (nLineY > y) {
                 nLineY -= 10;
-                if ( --it_a != mapAsm.end() ) {
+                if (--it_a != mapAsm.end()) {
                     DrawString(x, nLineY, (*it_a).second);
                 }
             }
@@ -89,7 +89,7 @@ class Demo_6502 : public olc::PixelGameEngine {
     bool OnUserCreate() {
         // Load the cartridge
         cart = std::make_shared<Cartridge>("nestest.nes");
-        if ( !cart->ImageValid() ) {
+        if (!cart->ImageValid()) {
             return false;
         }
 
@@ -108,53 +108,53 @@ class Demo_6502 : public olc::PixelGameEngine {
     bool OnUserUpdate(float fElapsedTime) {
         Clear(olc::DARK_BLUE);
 
-        if ( bEmulationRun) {
-            if ( fResidualTime > 0.0f ) {
+        if (bEmulationRun) {
+            if (fResidualTime > 0.0f) {
                 fResidualTime -= fElapsedTime;
             }
             else {
                 fResidualTime += (1.0f / 60.0f) - fElapsedTime;
                 do {
                     nes.clock();
-                } while ( !nes.ppu.frame_complete );
+                } while (!nes.ppu.frame_complete);
                 nes.ppu.frame_complete = false;
             }
         }
         else {
             // One clock at a time
-            if ( GetKey(olc::Key::C).bPressed) {
+            if (GetKey(olc::Key::C).bPressed) {
                 do {
                     nes.clock();
-                } while ( !nes.cpu.complete() );
+                } while (!nes.cpu.complete());
 
                 // Since the CPU runs slower, there may be more complete cycles to use up
                 do {
                     nes.clock();
-                } while ( nes.cpu.complete() );
+                } while (nes.cpu.complete());
             }
 
             // Emulate one entire frame
-            if ( GetKey(olc::Key::F).bPressed) {
+            if (GetKey(olc::Key::F).bPressed) {
                 // Clock enough for an entire frame
                 do {
                     nes.clock();
-                } while ( !nes.ppu.frame_complete );
+                } while (!nes.ppu.frame_complete);
 
                 // Use residual clock cycles to complete the current instruction
                 do {
                     nes.clock();
-                } while ( nes.cpu.complete() );
+                } while (nes.cpu.complete());
 
                 // Reset frame completion flag
                 nes.ppu.frame_complete = false;
             }
         }
 
-        if ( GetKey(olc::Key::SPACE).bPressed ) {
+        if (GetKey(olc::Key::SPACE).bPressed) {
             bEmulationRun = !bEmulationRun;
         }
 
-        if ( GetKey(olc::Key::R).bPressed ) {
+        if (GetKey(olc::Key::R).bPressed) {
             nes.reset();
         }
 

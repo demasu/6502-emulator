@@ -413,31 +413,30 @@ void cpu6502::clock() {
             fprintf(logfile, "%10d:%02d PC:%04X %s A:%02X X:%02X Y:%02X %s%s%s%s%s%s%s%s SPTR:%02X\n",
                     clock_count, 0, log_pc, lookup[opcode].name.c_str(), a, x, y, GetFlag(N) ? "N" : ".", GetFlag(V) ? "V" : ".", GetFlag(U) ? "U" : ".",
                     GetFlag(B) ? "B" : ".", GetFlag(D) ? "D" : ".", GetFlag(I) ? "I" : ".",
-                    GetFlag(Z) ? "Z" : ".", GetFlag(C) ? "C" : ".", sptr
-            );
+                    GetFlag(Z) ? "Z" : ".", GetFlag(C) ? "C" : ".", sptr);
             fclose(logfile);
             logfile = nullptr;
         }
 #endif
     }
 
-    // Increment global clock count
-    #ifdef LOGMODE
+// Increment global clock count
+#ifdef LOGMODE
     logger.log("Incrementing the global clock count");
-    #endif
+#endif
     clock_count++;
-    #ifdef LOGMODE
+#ifdef LOGMODE
     logger.log("Global clock count is now: [" + std::to_string(clock_count) + "]");
-    #endif
+#endif
 
-    // Decrement the number of cycles remaining for this instruction
-    #ifdef LOGMODE
+// Decrement the number of cycles remaining for this instruction
+#ifdef LOGMODE
     logger.log("Decrementing the number of cycles to go");
-    #endif
+#endif
     cycles--;
-    #ifdef LOGMODE
+#ifdef LOGMODE
     logger.log("Cycles is now: [" + std::to_string(cycles) + "]");
-    #endif
+#endif
 }
 
 // Flag functions
