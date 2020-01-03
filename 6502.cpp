@@ -279,12 +279,12 @@ uint8_t cpu6502::read(uint16_t addr) {
     // Read-only is set to false in normal operation as we want things to happen normally.
     // Some bus items may change state when read from and we want that.
     // However, when we're doing disassembly, we don't want that to happen.
-    return bus->read(addr, false);
+    return bus->cpuRead(addr, false);
 }
 
 // Writes an 8-bit byte to the specified address
 void cpu6502::write(uint16_t addr, uint8_t data) {
-    bus->write(addr, data);
+    bus->cpuWrite(addr, data);
 }
 
 // External Inputs
@@ -1368,7 +1368,7 @@ std::map<uint16_t, std::string> cpu6502::disassemble(uint16_t nStart, uint16_t n
         std::string sInst = "$" + hex(addr, 4) + ": ";
 
         // Read instruction and get its readable name
-        uint8_t opcode = bus->read(addr, true);
+        uint8_t opcode = bus->cpuRead(addr, true);
         addr++;
         sInst += lookup[opcode].name + " ";
 
@@ -1377,70 +1377,70 @@ std::map<uint16_t, std::string> cpu6502::disassemble(uint16_t nStart, uint16_t n
             sInst += "            {IMP}";
         }
         else if (lookup[opcode].addrmode == &cpu6502::IMM) {
-            value = bus->read(addr, true);
+            value = bus->cpuRead(addr, true);
             addr++;
             sInst += "#$" + hex(value, 2) + "        {IMM}";
         }
         else if (lookup[opcode].addrmode == &cpu6502::ZP0) {
-            lo = bus->read(addr, true);
+            lo = bus->cpuRead(addr, true);
             addr++;
             hi = 0x00;
             sInst += "$" + hex(lo, 2) + "         {ZP0}";
         }
         else if (lookup[opcode].addrmode == &cpu6502::ZPX) {
-            lo = bus->read(addr, true);
+            lo = bus->cpuRead(addr, true);
             addr++;
             hi = 0x00;
             sInst += "$" + hex(lo, 2) + ", X       {ZPX}";
         }
         else if (lookup[opcode].addrmode == &cpu6502::ZPY) {
-            lo = bus->read(addr, true);
+            lo = bus->cpuRead(addr, true);
             addr++;
             hi = 0x00;
             sInst += "$" + hex(lo, 2) + ", Y      {ZPY}";
         }
         else if (lookup[opcode].addrmode == &cpu6502::IZX) {
-            lo = bus->read(addr, true);
+            lo = bus->cpuRead(addr, true);
             addr++;
             hi = 0x00;
             sInst += "($" + hex(lo, 2) + ", X)    {IZX}";
         }
         else if (lookup[opcode].addrmode == &cpu6502::IZY) {
-            lo = bus->read(addr, true);
+            lo = bus->cpuRead(addr, true);
             addr++;
             hi = 0x00;
             sInst += "($" + hex(lo, 2) + "), Y    {IZY}";
         }
         else if (lookup[opcode].addrmode == &cpu6502::ABS) {
-            lo = bus->read(addr, true);
+            lo = bus->cpuRead(addr, true);
             addr++;
-            hi = bus->read(addr, true);
+            hi = bus->cpuRead(addr, true);
             addr++;
             sInst += "$" + hex((uint16_t)(hi << 8) | lo, 4) + "       {ABS}";
         }
         else if (lookup[opcode].addrmode == &cpu6502::ABX) {
-            lo = bus->read(addr, true);
+            lo = bus->cpuRead(addr, true);
             addr++;
-            hi = bus->read(addr, true);
+            hi = bus->cpuRead(addr, true);
             addr++;
             sInst += "$" + hex((uint16_t)(hi << 8) | lo, 4) + ", X    {ABX}";
         }
         else if (lookup[opcode].addrmode == &cpu6502::ABY) {
-            lo = bus->read(addr, true);
+            lo = bus->cpuRead(addr, true);
             addr++;
-            hi = bus->read(addr, true);
+            hi = bus->cpuRead(addr, true);
             addr++;
             sInst += "$" + hex((uint16_t)(hi << 8) | lo, 4) + ", Y    {ABY}";
         }
         else if (lookup[opcode].addrmode == &cpu6502::IND) {
-            lo = bus->read(addr, true);
+            lo = bus->cpuRead(addr, true);
             addr++;
-            hi = bus->read(addr, true);
+            hi = bus->cpuRead(addr, true);
             addr++;
             sInst += "($" + hex((uint16_t)(hi << 8) | lo, 4) + ")     {IND}";
         }
         else if (lookup[opcode].addrmode == &cpu6502::REL) {
-            value = bus->read(addr, true);
+            value = bus->cpuRead(addr, true);
             addr++;
             sInst += "$" + hex(value, 2) + " [$" + hex(addr + value, 4) + "] {REL}";
         }
