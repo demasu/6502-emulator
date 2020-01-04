@@ -13,7 +13,7 @@ class Cartridge {
 
     bool ImageValid();
 
-    enum Mirror {
+    enum MIRROR {
         HORIZONTAL,
         VERTICAL,
         ONESCREEN_LO,
@@ -27,6 +27,8 @@ class Cartridge {
     // Communication with the PPU bus
     bool ppuRead(uint16_t addr, uint8_t &data);
     bool ppuWrite(uint16_t addr, uint8_t data);
+
+    void reset();
 
    private:
     bool bImageValid  = false;
