@@ -31,4 +31,17 @@ class Bus {
 
     // Controller state
     uint8_t controller_state[2];
+
+    // A simple form of Direct Memory Access to swiftly transfer data from CPU bus memory to
+    // the OAM memory.
+    uint8_t dma_page = 0x00;
+    uint8_t dma_addr = 0x00;
+    uint8_t dma_data = 0x00;
+
+    // DMA transfers need to be timed accurately. It takes 512 cycles to transfer the 256 bytes,
+    // however the CPU needs to be on an even clock cycle to do it.
+    bool dma_dummy = true;
+
+    // Flag to indicate that DMA transfer is happening since the CPU gets suspended during it
+    bool dma_transfer = false;
 };
