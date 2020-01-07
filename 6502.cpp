@@ -346,7 +346,7 @@ void cpu6502::irq() {
 // Non-maskable interrupts cannot be ignored. It behaves in the same way as the regular IRQ
 // but it reads from 0xFFFA instead.
 void cpu6502::nmi() {
-    write(0x0100 + sptr, (pc >> 9) * 0x00FF);
+    write(0x0100 + sptr, (pc >> 8) & 0x00FF);
     sptr--;
     write(0x0100 + sptr, pc & 0x00FF);
     sptr--;
@@ -354,7 +354,7 @@ void cpu6502::nmi() {
     SetFlag(B, 0);
     SetFlag(U, 1);
     SetFlag(I, 1);
-    write(0x100 + sptr, status);
+    write(0x0100 + sptr, status);
     sptr--;
 
     addr_abs    = 0xFFFA;
@@ -420,23 +420,11 @@ void cpu6502::clock() {
 #endif
     }
 
-// Increment global clock count
-#ifdef LOGMODE
-    logger.log("Incrementing the global clock count");
-#endif
+    // Increment global clock count
     clock_count++;
-#ifdef LOGMODE
-    logger.log("Global clock count is now: [" + std::to_string(clock_count) + "]");
-#endif
 
-// Decrement the number of cycles remaining for this instruction
-#ifdef LOGMODE
-    logger.log("Decrementing the number of cycles to go");
-#endif
+    // Decrement the number of cycles remaining for this instruction
     cycles--;
-#ifdef LOGMODE
-    logger.log("Cycles is now: [" + std::to_string(cycles) + "]");
-#endif
 }
 
 // Flag functions
@@ -1441,7 +1429,7 @@ std::map<uint16_t, std::string> cpu6502::disassemble(uint16_t nStart, uint16_t n
         else if (lookup[opcode].addrmode == &cpu6502::REL) {
             value = bus->cpuRead(addr, true);
             addr++;
-            sInst += "$" + hex(value, 2) + " [$" + hex(addr + value, 4) + "]  {REL}";
+            sInst += "$" + hex(value, 2) + " [$" + hex(addr + (int8_t)value, 4) + "]  {REL}";
         }
 
         mapLines[line_addr] = sInst;
