@@ -4,6 +4,8 @@ ColumnLimit: 0
 AlignConsecutiveAssignments: true
 AlignTrailingComments: true
 AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AlwaysBreakAfterReturnType: None
 #AllowShortBlocksOnASingleLine: Empty
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
@@ -21,6 +23,7 @@ BraceWrapping:
   AfterExternBlock: false
   BeforeCatch: true
   BeforeElse: true
+BreakBeforeBinaryOperators: None
 IncludeBlocks: Preserve
 IndentCaseLabels: true
 IndentPPDirectives: BeforeHash
