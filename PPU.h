@@ -33,6 +33,9 @@ class PPU {
     void reset();
     bool nmi = false;
 
+    // OAM is conveniently packaged, but DMA still needs to access it here
+    uint8_t* pOAM = (uint8_t*)OAM;
+
    private:
     union {
         struct {
@@ -120,6 +123,29 @@ class PPU {
     uint16_t bg_shifter_pattern_hi = 0x0000;
     uint16_t bg_shifter_attrib_lo  = 0x0000;
     uint16_t bg_shifter_attrib_hi  = 0x0000;
+
+    // Foreground, "sprite", rendering
+    // OAM is internal to the PPU and is not connected via the bus.
+    // It stores the locations of 64 8x8 (or 8x16) tiles to be drawn on the next frame
+    struct sObjectAttributeEntry {
+        uint8_t y;          // Y position of the sprite
+        uint8_t id;         // ID of tile from pattern memory
+        uint8_t attribute;  // Flags for how the sprite should be rendered
+        uint8_t x;          // X position of the sprite
+    } OAM[64];
+
+    // Register to store the address when the CPU manually communicates with the OAM.
+    // This isn't normally used becuase it's super slow.
+    uint8_t oam_addr = 0x00;
+
+    sObjectAttributeEntry spriteScanline[8];
+    uint8_t sprite_count;
+    uint8_t sprite_shifter_pattern_lo[8];
+    uint8_t sprite_shifter_pattern_hi[8];
+
+    // Sprite zero collision flags
+    bool bSpriteZeroHitPossible   = false;
+    bool bSpriteZeroBeingRendered = false;
 
     // Cartridge
     std::shared_ptr<Cartridge> cart;
