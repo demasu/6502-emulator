@@ -155,7 +155,26 @@ class cpu6502 {
     uint8_t TXS();  // Transfer X to stack pointer
     uint8_t TYA();  // Transfer Y to A
 
-    // Unofficial opcodes call this function which works as a NOP
+    // Unofficial opcode definitions
+    uint8_t SLO();
+    uint8_t ANC();
+    uint8_t RLA();
+    uint8_t SRE();
+    uint8_t RRA();
+    uint8_t SAX();
+    uint8_t XAA();
+    uint8_t LAX();
+    uint8_t DCP();
+    uint8_t ISB(); // AKA ISC
+    uint8_t STP();
+    uint8_t AXS();
+    uint8_t ARR();
+    uint8_t AHX();
+    uint8_t TAS();
+    uint8_t SHX();
+    uint8_t LAS();
+
+    // Unofficial opcodes that aren't yet defined call this, which acts as a NOP
     uint8_t XXX();
 
 #ifdef LOGMODE

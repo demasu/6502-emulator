@@ -766,3 +766,11 @@ void PPU::reset() {
     vram_addr.reg         = 0x0000;
     tram_addr.reg         = 0x0000;
 }
+
+int PPU::GetScanLine() {
+    return scanline;
+}
+
+int PPU::GetCycle() {
+    return cycle;
+}

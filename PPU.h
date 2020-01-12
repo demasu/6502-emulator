@@ -36,6 +36,9 @@ class PPU {
     // OAM is conveniently packaged, but DMA still needs to access it here
     uint8_t* pOAM = (uint8_t*)OAM;
 
+    int GetScanLine();
+    int GetCycle();
+
    private:
     union {
         struct {
