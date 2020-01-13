@@ -58,6 +58,9 @@ class cpu6502 {
     uint8_t cycles       = 0;       // How many cycles the instruction has remaining
     uint32_t clock_count = 0;       // Global accumulation of the number of clock cycles
 
+    // Used to get the STP command to work as it does in real life
+    bool isRunning = true;
+
     // Links to the bus
     Bus *bus = nullptr;
     uint8_t read(uint16_t a);
@@ -165,7 +168,7 @@ class cpu6502 {
     uint8_t XAA();
     uint8_t LAX();
     uint8_t DCP();
-    uint8_t ISB(); // AKA ISC
+    uint8_t ISB();  // AKA ISC
     uint8_t STP();
     uint8_t AXS();
     uint8_t ARR();
@@ -173,6 +176,7 @@ class cpu6502 {
     uint8_t TAS();
     uint8_t SHX();
     uint8_t LAS();
+    uint8_t ALR();
 
     // Unofficial opcodes that aren't yet defined call this, which acts as a NOP
     uint8_t XXX();
