@@ -14,7 +14,7 @@ cpu6502::cpu6502() {
     lookup = {
         {"BRK", &a::BRK, &a::IMM, 7},  // 00
         {"ORA", &a::ORA, &a::IZX, 6},  // 01
-        {"???", &a::XXX, &a::IMP, 2},  // 02
+        {"STP", &a::STP, &a::IMP, 2},  // 02
         {"SLO", &a::SLO, &a::IZX, 8},  // 03
         {"NOP", &a::NOP, &a::ZP0, 3},  // 04
         {"ORA", &a::ORA, &a::ZP0, 3},  // 05
@@ -30,7 +30,7 @@ cpu6502::cpu6502() {
         {"SLO", &a::SLO, &a::ABS, 6},  // 0F
         {"BPL", &a::BPL, &a::REL, 2},  // 10
         {"ORA", &a::ORA, &a::IZY, 5},  // 11
-        {"???", &a::XXX, &a::IMP, 2},  // 12
+        {"STP", &a::STP, &a::IMP, 2},  // 12
         {"SLO", &a::SLO, &a::IZY, 8},  // 13
         {"NOP", &a::NOP, &a::ZPX, 4},  // 14
         {"ORA", &a::ORA, &a::ZPX, 4},  // 15
@@ -46,7 +46,7 @@ cpu6502::cpu6502() {
         {"SLO", &a::SLO, &a::ABX, 7},  // 1F
         {"JSR", &a::JSR, &a::ABS, 6},  // 20
         {"AND", &a::AND, &a::IZX, 6},  // 21
-        {"???", &a::XXX, &a::IMP, 2},  // 22
+        {"STP", &a::STP, &a::IMP, 2},  // 22
         {"RLA", &a::RLA, &a::IZX, 8},  // 23
         {"BIT", &a::BIT, &a::ZP0, 3},  // 24
         {"AND", &a::AND, &a::ZP0, 3},  // 25
@@ -62,7 +62,7 @@ cpu6502::cpu6502() {
         {"RLA", &a::RLA, &a::ABS, 6},  // 2F
         {"BMI", &a::BMI, &a::REL, 2},  // 30
         {"AND", &a::AND, &a::IZY, 5},  // 31
-        {"???", &a::XXX, &a::IMP, 2},  // 32
+        {"STP", &a::STP, &a::IMP, 2},  // 32
         {"RLA", &a::RLA, &a::IZY, 8},  // 33
         {"NOP", &a::NOP, &a::ZPX, 4},  // 34
         {"AND", &a::AND, &a::ZPX, 4},  // 35
@@ -78,7 +78,7 @@ cpu6502::cpu6502() {
         {"RLA", &a::RLA, &a::ABX, 7},  // 3F
         {"RTI", &a::RTI, &a::IMP, 6},  // 40
         {"EOR", &a::EOR, &a::IZX, 6},  // 41
-        {"???", &a::XXX, &a::IMP, 2},  // 42
+        {"STP", &a::STP, &a::IMP, 2},  // 42
         {"SRE", &a::SRE, &a::IZX, 8},  // 43
         {"NOP", &a::NOP, &a::ZP0, 3},  // 44
         {"EOR", &a::EOR, &a::ZP0, 3},  // 45
@@ -87,14 +87,14 @@ cpu6502::cpu6502() {
         {"PHA", &a::PHA, &a::IMP, 3},  // 48
         {"EOR", &a::EOR, &a::IMM, 2},  // 49
         {"LSR", &a::LSR, &a::IMP, 2},  // 4A
-        {"???", &a::XXX, &a::IMP, 2},  // 4B
+        {"ALR", &a::ALR, &a::IMM, 2},  // 4B
         {"JMP", &a::JMP, &a::ABS, 3},  // 4C
         {"EOR", &a::EOR, &a::ABS, 4},  // 4D
         {"LSR", &a::LSR, &a::ABS, 6},  // 4E
         {"SRE", &a::SRE, &a::ABS, 6},  // 4F
         {"BVC", &a::BVC, &a::REL, 2},  // 50
         {"EOR", &a::EOR, &a::IZY, 5},  // 51
-        {"???", &a::XXX, &a::IMP, 2},  // 52
+        {"STP", &a::STP, &a::IMP, 2},  // 52
         {"SRE", &a::SRE, &a::IZY, 8},  // 53
         {"NOP", &a::NOP, &a::ZPX, 4},  // 54
         {"EOR", &a::EOR, &a::ZPX, 4},  // 55
@@ -110,7 +110,7 @@ cpu6502::cpu6502() {
         {"SRE", &a::SRE, &a::ABX, 7},  // 5F
         {"RTS", &a::RTS, &a::IMP, 6},  // 60
         {"ADC", &a::ADC, &a::IZX, 6},  // 61
-        {"???", &a::XXX, &a::IMP, 2},  // 62
+        {"STP", &a::STP, &a::IMP, 2},  // 62
         {"RRA", &a::RRA, &a::IZX, 8},  // 63
         {"NOP", &a::NOP, &a::ZP0, 3},  // 64
         {"ADC", &a::ADC, &a::ZP0, 3},  // 65
@@ -126,7 +126,7 @@ cpu6502::cpu6502() {
         {"RRA", &a::RRA, &a::ABS, 6},  // 6F
         {"BVS", &a::BVS, &a::REL, 2},  // 70
         {"ADC", &a::ADC, &a::IZY, 5},  // 71
-        {"???", &a::XXX, &a::IMP, 2},  // 72
+        {"STP", &a::STP, &a::IMP, 2},  // 72
         {"RRA", &a::RRA, &a::IZY, 8},  // 73
         {"NOP", &a::NOP, &a::ZPX, 4},  // 74
         {"ADC", &a::ADC, &a::ZPX, 4},  // 75
@@ -158,7 +158,7 @@ cpu6502::cpu6502() {
         {"SAX", &a::SAX, &a::ABS, 4},  // 8F
         {"BCC", &a::BCC, &a::REL, 2},  // 90
         {"STA", &a::STA, &a::IZY, 6},  // 91
-        {"???", &a::XXX, &a::IMP, 2},  // 92
+        {"STP", &a::STP, &a::IMP, 2},  // 92
         {"AHX", &a::AHX, &a::IZY, 6},  // 93
         {"STY", &a::STY, &a::ZPX, 4},  // 94
         {"STA", &a::STA, &a::ZPX, 4},  // 95
@@ -190,7 +190,7 @@ cpu6502::cpu6502() {
         {"LAX", &a::LAX, &a::ABS, 4},  // AF
         {"BCS", &a::BCS, &a::REL, 2},  // B0
         {"LDA", &a::LDA, &a::IZY, 5},  // B1
-        {"???", &a::XXX, &a::IMP, 2},  // B2
+        {"STP", &a::STP, &a::IMP, 2},  // B2
         {"LAX", &a::LAX, &a::IZY, 5},  // B3
         {"LDY", &a::LDY, &a::ZPX, 4},  // B4
         {"LDA", &a::LDA, &a::ZPX, 4},  // B5
@@ -222,7 +222,7 @@ cpu6502::cpu6502() {
         {"DCP", &a::DCP, &a::ABS, 6},  // CF
         {"BNE", &a::BNE, &a::REL, 2},  // D0
         {"CMP", &a::CMP, &a::IZY, 5},  // D1
-        {"???", &a::XXX, &a::IMP, 2},  // D2
+        {"STP", &a::STP, &a::IMP, 2},  // D2
         {"DCP", &a::DCP, &a::IZY, 8},  // D3
         {"NOP", &a::NOP, &a::ZPX, 4},  // D4
         {"CMP", &a::CMP, &a::ZPX, 4},  // D5
@@ -254,7 +254,7 @@ cpu6502::cpu6502() {
         {"ISB", &a::ISB, &a::ABS, 6},  // EF
         {"BEQ", &a::BEQ, &a::REL, 2},  // F0
         {"SBC", &a::SBC, &a::IZY, 5},  // F1
-        {"???", &a::XXX, &a::IMP, 2},  // F2
+        {"STP", &a::STP, &a::IMP, 2},  // F2
         {"ISB", &a::ISB, &a::IZY, 8},  // F3
         {"NOP", &a::NOP, &a::ZPX, 4},  // F4
         {"SBC", &a::SBC, &a::ZPX, 4},  // F5
@@ -313,6 +313,9 @@ void cpu6502::reset() {
     addr_rel = 0x0000;
     addr_abs = 0x0000;
     fetched  = 0x00;
+
+    // Set the running flag to true
+    isRunning = true;
 
     // The number of cycles for a reset
     cycles = 8;
@@ -375,59 +378,61 @@ void cpu6502::clock() {
     // clock-cycle accurate emulation. As such, we only do stuff when the cycle
     // count is 0.
 
-    if (cycles == 0) {
-        // Read the next instruction byte. This byte is used to index the translation table
-        // so we can get the information we need to implement the instruction
-        opcode = read(pc);
+    if (isRunning) {
+        if (cycles == 0) {
+            // Read the next instruction byte. This byte is used to index the translation table
+            // so we can get the information we need to implement the instruction
+            opcode = read(pc);
 
 #ifdef LOGMODE
-        uint16_t log_pc = pc;
+            uint16_t log_pc = pc;
 #endif
 
-        // Always set the unused status flag to 1
-        SetFlag(U, true);
+            // Always set the unused status flag to 1
+            SetFlag(U, true);
 
-        // Increment the program counter since we've read the instruction byte
-        pc++;
+            // Increment the program counter since we've read the instruction byte
+            pc++;
 
-        // Get the starting number of cycles
-        cycles = lookup[opcode].cycles;
+            // Get the starting number of cycles
+            cycles = lookup[opcode].cycles;
 
-        // Perform fetch of the intermediate data using the required addressing mode
-        uint8_t additional_cycle1 = (this->*lookup[opcode].addrmode)();
+            // Perform fetch of the intermediate data using the required addressing mode
+            uint8_t additional_cycle1 = (this->*lookup[opcode].addrmode)();
 
-        // Perform the actual operation
-        uint8_t additional_cycle2 = (this->*lookup[opcode].operate)();
+            // Perform the actual operation
+            uint8_t additional_cycle2 = (this->*lookup[opcode].operate)();
 
-        // Since we may have a need for more clock cycles due to the addressing mode, we need
-        // to add them here
-        cycles += (additional_cycle1 & additional_cycle2);
+            // Since we may have a need for more clock cycles due to the addressing mode, we need
+            // to add them here
+            cycles += (additional_cycle1 & additional_cycle2);
 
-        // Definitely make sure the unused status flag is 1
-        SetFlag(U, true);
+            // Definitely make sure the unused status flag is 1
+            SetFlag(U, true);
 
 #ifdef LOGMODE
-        // The logger dumps the entire processor state every cycle for analysis.
-        // It can be used for debugging the emulation, but it is also very slow.
-        if (logfile == nullptr) {
-            logfile = fopen("cpu6502.txt", "a+");
-        }
-        if (logfile != nullptr) {
-            fprintf(logfile, "%10d:%02d PC:%04X %s A:%02X X:%02X Y:%02X %s%s%s%s%s%s%s%s SPTR:%02X\n",
-                    clock_count, 0, log_pc, lookup[opcode].name.c_str(), a, x, y, GetFlag(N) ? "N" : ".", GetFlag(V) ? "V" : ".", GetFlag(U) ? "U" : ".",
-                    GetFlag(B) ? "B" : ".", GetFlag(D) ? "D" : ".", GetFlag(I) ? "I" : ".",
-                    GetFlag(Z) ? "Z" : ".", GetFlag(C) ? "C" : ".", sptr);
-            fclose(logfile);
-            logfile = nullptr;
-        }
+            // The logger dumps the entire processor state every cycle for analysis.
+            // It can be used for debugging the emulation, but it is also very slow.
+            if (logfile == nullptr) {
+                logfile = fopen("cpu6502.txt", "a+");
+            }
+            if (logfile != nullptr) {
+                fprintf(logfile, "%10d:%02d PC:%04X %s A:%02X X:%02X Y:%02X %s%s%s%s%s%s%s%s SPTR:%02X\n",
+                        clock_count, 0, log_pc, lookup[opcode].name.c_str(), a, x, y, GetFlag(N) ? "N" : ".", GetFlag(V) ? "V" : ".", GetFlag(U) ? "U" : ".",
+                        GetFlag(B) ? "B" : ".", GetFlag(D) ? "D" : ".", GetFlag(I) ? "I" : ".",
+                        GetFlag(Z) ? "Z" : ".", GetFlag(C) ? "C" : ".", sptr);
+                fclose(logfile);
+                logfile = nullptr;
+            }
 #endif
+        }
+
+        // Increment global clock count
+        clock_count++;
+
+        // Decrement the number of cycles remaining for this instruction
+        cycles--;
     }
-
-    // Increment global clock count
-    clock_count++;
-
-    // Decrement the number of cycles remaining for this instruction
-    cycles--;
 }
 
 // Flag functions
@@ -1499,6 +1504,8 @@ uint8_t cpu6502::ISB() {
 uint8_t cpu6502::STP() {
     fetch();
     // Figure out how to halt the CPU but not exit the program
+    isRunning = false;
+    std::cerr << "STP instruction executed" << std::endl;
 
     return 0;
 }
@@ -1567,8 +1574,14 @@ uint8_t cpu6502::LAS() {
     return 1;
 }
 
-// This function captures illegal opcodes
-uint8_t cpu6502::XXX() {
+uint8_t cpu6502::ALR() {
+    fetch();
+    a = a & fetched;
+    SetFlag(C, (a & 0x01));
+    a = a >> 1;
+    SetFlag(Z, a == 0);
+    SetFlag(N, 0);
+
     return 0;
 }
 
