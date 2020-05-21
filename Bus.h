@@ -2,11 +2,12 @@
 #include <array>
 #include <cstdint>
 
+#include "GenericBus.h"
 #include "6502.h"
 #include "Cartridge.h"
 #include "PPU.h"
 
-class Bus {
+class Bus : public GenericBus {
    public:
     Bus();
     ~Bus();
@@ -18,12 +19,12 @@ class Bus {
     uint8_t cpuRam[2048];
     uint8_t controller[2];
 
-    void cpuWrite(uint16_t addr, uint8_t data);
-    uint8_t cpuRead(uint16_t addr, bool bReadOnly = false);
+    void cpuWrite(uint16_t addr, uint8_t data) override;
+    uint8_t cpuRead(uint16_t addr, bool bReadOnly = false) override;
 
     void insertCartridge(const std::shared_ptr<Cartridge>& cartridge);
-    void reset();
-    void clock();
+    void reset() override;
+    void clock() override;
 
    private:
     // Count of how many clocks have passed

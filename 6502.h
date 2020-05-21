@@ -10,6 +10,7 @@
 #endif
 
 class Bus;
+class GenericBus;
 
 class cpu6502 {
    public:
@@ -30,6 +31,7 @@ class cpu6502 {
 
     bool complete();
     void ConnectBus(Bus *n) { bus = n; }
+    //void ConnectBus(GenericBus *n) { bus = n; }
 
     std::map<uint16_t, std::string> disassemble(uint16_t nStart, uint16_t nStop);
 
